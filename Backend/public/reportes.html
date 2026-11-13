@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reportes y Totales - Bolivia</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script>
+        const token = localStorage.getItem('token');
+        if (!token) window.location.href = '/login.html';
+    </script>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block sidebar">
+                <div class="brand"><i class="bi bi-wallet2"></i> Mis Finanzas BO</div>
+                <a href="/"><i class="bi bi-pie-chart"></i> Mi Resumen</a>
+                <a href="/gastos.html"><i class="bi bi-cart-dash"></i> Gastos Diarios</a>
+                <a href="/declaraciones.html"><i class="bi bi-file-earmark-text"></i> Impuestos</a>
+                <a href="/reportes.html" class="active"><i class="bi bi-graph-up-arrow"></i> Reportes y Totales</a>
+                <a href="#" onclick="localStorage.clear(); window.location.href='/login.html'" class="text-danger mt-5"><i class="bi bi-box-arrow-right"></i> Cerrar Sesión</a>
+            </nav>
+            <main class="col-md-10 ms-sm-auto main-content">
+                <h2 class="fw-bold mb-4">Reportes y Totales</h2>
+                
+                <!-- Tarjetas de Sumatorias -->
+                <div class="row mb-4">
+                    <div class="col-md-4 mb-3">
+                        <div class="card bg-success text-white shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <h6>Total Histórico a Pagar</h6>
+                                <h2 class="fw-bold" id="cardTotalGlobal">Bs. 0.00</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card bg-primary text-white shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <h6>Total del Mes (<span id="lblMesActual"></span>)</h6>
+                                <h2 class="fw-bold" id="cardTotalMes">Bs. 0.00</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card bg-warning text-dark shadow-sm border-0">
+                            <div class="card-body text-center">
+                                <h6>Total del Año (<span id="lblAnioActual"></span>)</h6>
+                                <h2 class="fw-bold" id="cardTotalAnio">Bs. 0.00</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Historial -->
+                <div class="card shadow-sm border-0">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-3">Historial de Impuestos Registrados</h5>
+                        <table class="table table-hover align-middle">
+                            <thead class="table-dark">
+                                <tr><th>Periodo</th><th>Impuesto</th><th>Monto Base</th><th>Impuesto Calculado</th><th>Total a Pagar</th></tr>
+                            </thead>
+                            <tbody id="tablaReportes"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        async function cargarReporte() {
+            // 1. Obtener todo el historial de impuestos desde la base de datos
+            const res = await fetch('/api/declaraciones', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            const data = await res.json();
+
+            const tbody = document.getElementById('tablaReportes');
+            tbody.innerHTML = '';
+
+            if (data.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-muted">No has registrado ningún impuesto aún.</td></tr>';
+                return;
+            }
+
+            let totalGlobal = 0;
+            let totalMesActual = 0;
+            let totalAnioActual = 0;
+
+            // Fechas actuales para comparar
+            const hoy = new Date();
+            const mesActualStr = hoy.toISOString().slice(0, 7); // YYYY-MM
+            const anioActualStr = hoy.toISOString().slice(0, 4); // YYYY
+
+            document.getElementById('lblMesActual').innerText = mesActualStr;
+            document.getElementById('lblAnioActual').innerText = anioActualStr;
+
+            // 2. Dibujar la tabla y calcular sumatorias
+            data.forEach(d => {
+                // Sumar al total global
+                totalGlobal += parseFloat(d.impuesto);
+                
+                // Sumar si corresponde al mes actual
+                if (d.periodo === mesActualStr) totalMesActual += parseFloat(d.impuesto);
+                
+                // Sumar si corresponde al año actual
+                if (d.periodo.startsWith(anioActualStr)) totalAnioActual += parseFloat(d.impuesto);
+
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="fw-bold">${d.periodo}</td>
+                        <td><span class="badge bg-info text-dark">${d.tipo_impuesto}</span></td>
+                        <td>Bs. ${d.monto_base}</td>
+                        <td class="text-danger fw-bold">Bs. ${d.impuesto}</td>
+                        <td class="text-success fw-bold">Bs. ${d.total}</td>
+                    </tr>
+                `;
+            });
+
+            // 3. Mostrar totales en las tarjetas
+            document.getElementById('cardTotalGlobal').innerText = `Bs. ${totalGlobal.toFixed(2)}`;
+            document.getElementById('cardTotalMes').innerText = `Bs. ${totalMesActual.toFixed(2)}`;
+            document.getElementById('cardTotalAnio').innerText = `Bs. ${totalAnioActual.toFixed(2)}`;
+        }
+
+        // Ejecutar al cargar la página
+        cargarReporte();
+    </script>
+</body>
+</html>

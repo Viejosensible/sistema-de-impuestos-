@@ -1,0 +1,10 @@
+body { background-color: #f4f6f9; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+.sidebar { min-height: 100vh; background-color: #1e293b; color: white; padding-top: 20px; }
+.sidebar a { color: #94a3b8; text-decoration: none; padding: 12px 20px; display: block; transition: 0.3s; border-left: 4px solid transparent; }
+.sidebar a:hover, .sidebar a.active { background-color: #334155; color: white; border-left: 4px solid #3b82f6; }
+.sidebar .brand { font-size: 1.2rem; font-weight: bold; padding: 20px; text-align: center; border-bottom: 1px solid #334155; margin-bottom: 20px; color: white; }
+.main-content { padding: 30px; }
+.card-stats { border: none; border-radius: 10px; color: white; }
+.bg-gradient-blue { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+.bg-gradient-green { background: linear-gradient(135deg, #10b981, #059669); }
+.bg-gradient-orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
