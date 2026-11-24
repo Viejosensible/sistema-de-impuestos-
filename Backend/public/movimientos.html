@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Movimientos - SIN</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-dark px-3">
+        <a class="navbar-brand" href="index.html">SIN Tributario</a>
+        <div class="d-flex align-items-center gap-2">
+            <input type="text" id="ipInput" class="form-control form-control-sm" style="width: 150px;" placeholder="IP de Ubuntu">
+            <button class="btn btn-sm btn-warning" onclick="guardarIP()">Guardar IP</button>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white">Registrar Factura</div>
+                    <div class="card-body">
+                        <form id="formMovimiento">
+                            <select id="contribuyente_id" class="form-select mb-2" required></select>
+                            <select id="tipo_movimiento" class="form-select mb-2" required><option value="venta">Venta</option><option value="compra">Compra</option></select>
+                            <input type="number" id="monto_total" class="form-control mb-2" placeholder="Monto (Bs)" step="0.01" required>
+                            <input type="text" id="periodo_trimestre" class="form-control mb-2" placeholder="Periodo (Ej. 2026-T4)" required>
+                            <input type="text" id="numero_factura" class="form-control mb-2" placeholder="Nro de Factura">
+                            <button type="submit" class="btn btn-success w-100">Guardar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="card shadow-sm border-danger">
+                    <div class="card-header bg-danger text-white">Cálculo por Periodo</div>
+                    <div class="card-body">
+                        <div class="input-group mb-3">
+                            <input type="text" id="calc_periodo" class="form-control" placeholder="Periodo (Ej. 2026-T4)">
+                            <button class="btn btn-dark" onclick="calcularImpuestos()">Calcular</button>
+                        </div>
+                        <div id="resultadoCalculo" class="d-none">
+                            <table class="table table-bordered">
+                                <tr><th>Ventas</th><td id="res_ventas"></td></tr>
+                                <tr><th>Compras</th><td id="res_compras"></td></tr>
+                                <tr class="table-info"><th>IVA Ventas</th><td id="res_iva_ventas"></td></tr>
+                                <tr class="table-info"><th>IVA Compras</th><td id="res_iva_compras"></td></tr>
+                                <tr class="table-warning"><th>Saldo IVA</th><td id="res_saldo_iva"></td></tr>
+                                <tr><th>Estado IVA</th><td id="res_estado_iva" class="fw-bold"></td></tr>
+                                <tr class="table-danger"><th>IT (3%)</th><td id="res_it"></td></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let currentIP = localStorage.getItem('serverIP') || '192.168.6.225';
+        document.getElementById('ipInput').value = currentIP;
+        function getApiUrl() { return `http://${currentIP}:3000/api`; }
+        function guardarIP() { currentIP = document.getElementById('ipInput').value; localStorage.setItem('serverIP', currentIP); alert('IP actualizada'); init(); }
+        async function init() {
+            const res = await fetch(`${getApiUrl()}/contribuyentes`);
+            const contribuyentes = await res.json();
+            const select = document.getElementById('contribuyente_id');
+            select.innerHTML = '<option value="">Seleccione...</option>';
+            contribuyentes.forEach(c => select.innerHTML += `<option value="${c.id}">${c.nombre} (${c.perfil})</option>`);
+        }
+        document.getElementById('formMovimiento').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await fetch(`${getApiUrl()}/movimientos`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ contribuyente_id: document.getElementById('contribuyente_id').value, tipo_movimiento: document.getElementById('tipo_movimiento').value, monto_total: document.getElementById('monto_total').value, periodo_trimestre: document.getElementById('periodo_trimestre').value, numero_factura: document.getElementById('numero_factura').value, fecha: new Date().toISOString().split('T')[0], tipo_impuesto: 'IVA', categoria: 'General', nit_proveedor: '' }) });
+            alert('Guardado'); e.target.reset();
+        });
+        async function calcularImpuestos() {
+            const periodo = document.getElementById('calc_periodo').value;
+            const contribuyente_id = document.getElementById('contribuyente_id').value;
+            if(!periodo || !contribuyente_id) return alert('Faltan datos');
+            const res = await fetch(`${getApiUrl()}/calculo/${contribuyente_id}/${periodo}`);
+            const data = await res.json();
+            document.getElementById('resultadoCalculo').classList.remove('d-none');
+            document.getElementById('res_ventas').innerText = 'Bs. ' + data.total_ventas.toFixed(2);
+            document.getElementById('res_compras').innerText = 'Bs. ' + data.total_compras.toFixed(2);
+            document.getElementById('res_iva_ventas').innerText = 'Bs. ' + data.iva_debito_fiscal.toFixed(2);
+            document.getElementById('res_iva_compras').innerText = 'Bs. ' + data.iva_credito_fiscal.toFixed(2);
+            document.getElementById('res_saldo_iva').innerText = 'Bs. ' + data.saldo_iva.toFixed(2);
+            document.getElementById('res_estado_iva').innerText = data.estado_iva;
+            document.getElementById('res_it').innerText = 'Bs. ' + data.impuesto_IT.toFixed(2);
+        }
+        init();
+    </script>
+</body>
+</html>
