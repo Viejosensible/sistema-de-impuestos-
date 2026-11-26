@@ -1,1 +1,517 @@
+/* ==========================================================================
+   SISTEMA TRIBUTARIO - DISEÑO EJECUTIVO, ELEGANTE Y MODERNO (FINTECH PREMIUM)
+   Tipografía: Plus Jakarta Sans / Inter / JetBrains Mono
+   ========================================================================== */
 
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root {
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, Menlo, Monaco, Consolas, monospace;
+
+  /* Paleta Corporativa */
+  --bg-gradient-mesh: radial-gradient(at 0% 0%, #1e1b4b 0px, transparent 50%),
+                      radial-gradient(at 100% 0%, #0f172a 0px, transparent 50%),
+                      radial-gradient(at 50% 100%, #172554 0px, transparent 50%);
+
+  --primary-gradient: linear-gradient(135deg, #2563eb 0%, #1d4ed8 50%, #1e40af 100%);
+  --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  --danger-gradient: linear-gradient(135deg, #f43f5e 0%, #e11d48 50%, #be123c 100%);
+  --dark-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+
+  --surface-bg: #f8fafc;
+  --surface-card: #ffffff;
+  --border-subtle: #e2e8f0;
+  --border-hover: #cbd5e1;
+
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+
+  --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+  --shadow-hover: 0 12px 30px -4px rgba(15, 23, 42, 0.1), 0 4px 12px -2px rgba(15, 23, 42, 0.06);
+  --shadow-glow-blue: 0 0 25px rgba(37, 99, 235, 0.25);
+  --shadow-glow-green: 0 0 25px rgba(16, 185, 129, 0.25);
+  --shadow-glow-red: 0 0 25px rgba(225, 29, 72, 0.25);
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--surface-bg);
+  color: var(--text-primary);
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Numeración tabular para cifras financieras alineadas */
+.num-tabular {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+/* Scrollbar estilizado y elegante */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Encabezado Ejecutivo */
+.header-executive {
+  background: linear-gradient(135deg, #0b0f19 0%, #111827 50%, #0f172a 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.brand-emblem {
+  background: var(--primary-gradient);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 0 15px rgba(37, 99, 235, 0.45);
+  border-radius: 12px;
+}
+
+/* Tarjetas Pro */
+.card-pro {
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  box-shadow: var(--shadow-card);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-pro:hover {
+  box-shadow: var(--shadow-hover);
+  border-color: var(--border-hover);
+}
+
+.card-pro-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-subtle);
+  background: #ffffff;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Inputs Modernos Pro */
+.form-control-pro {
+  border: 1.5px solid var(--border-subtle);
+  border-radius: 10px;
+  padding: 0.65rem 0.95rem;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  background-color: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.form-control-pro:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  outline: none;
+  background-color: #ffffff;
+}
+
+.input-hero {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  padding: 0.75rem 1rem;
+}
+
+.input-hero-addon {
+  background: #f8fafc;
+  border: 1.5px solid var(--border-subtle);
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  font-weight: 800;
+  color: #334155;
+  font-size: 1.25rem;
+}
+
+/* Barra Gráfica de Distribución Salarial y Tributaria */
+.tax-visual-bar {
+  height: 10px;
+  border-radius: 9999px;
+  background: #e2e8f0;
+  overflow: hidden;
+  display: flex;
+}
+
+.tax-visual-segment {
+  height: 100%;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.segment-neto { background: linear-gradient(90deg, #3b82f6, #2563eb); }
+.segment-aportes { background: linear-gradient(90deg, #f43f5e, #e11d48); }
+.segment-cubierto { background: linear-gradient(90deg, #10b981, #059669); }
+.segment-pagar { background: linear-gradient(90deg, #f59e0b, #d97706); }
+
+/* Píldoras de Escenarios */
+.scenario-pill {
+  border-radius: 12px;
+  padding: 0.65rem 0.95rem;
+  border: 1.5px solid var(--border-subtle);
+  background: #ffffff;
+  color: var(--text-primary);
+  font-size: 0.825rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  text-align: left;
+}
+
+.scenario-pill:hover {
+  border-color: #94a3b8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+.scenario-pill.active {
+  background: var(--primary-gradient);
+  color: #ffffff !important;
+  border-color: #1e40af;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
+}
+
+.scenario-badge-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  background: #f1f5f9;
+}
+
+/* HOJA DE INFORME TRIBUTARIO PROFESIONAL */
+.official-report-sheet {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-card);
+  padding: 2.25rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.official-report-sheet::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 30%, #10b981 70%, #059669 100%);
+}
+
+.report-watermark {
+  position: absolute;
+  right: -30px;
+  bottom: -30px;
+  font-size: 16rem;
+  font-weight: 900;
+  color: rgba(241, 245, 249, 0.65);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  line-height: 1;
+}
+
+/* Sello Institucional */
+.official-seal {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 2px dashed #0284c7;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #0369a1;
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  background: rgba(224, 242, 254, 0.4);
+  transform: rotate(-6deg);
+  user-select: none;
+}
+
+/* Secciones del Informe Pro */
+.report-section-pro {
+  background: #ffffff;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  margin-bottom: 1.25rem;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.report-section-pro-header {
+  background: #f8fafc;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid var(--border-subtle);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #334155;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  letter-spacing: 0.02em;
+}
+
+.report-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.55rem 1rem;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.9rem;
+}
+
+.report-item-row:last-child {
+  border-bottom: none;
+}
+
+.report-item-subtotal {
+  background: #f8fafc;
+  font-weight: 600;
+  border-top: 1px dashed var(--border-subtle);
+  border-bottom: 1px dashed var(--border-subtle);
+}
+
+.report-item-total {
+  background: #f1f5f9;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+/* Signos de Operación */
+.op-sign {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  margin-right: 0.5rem;
+}
+
+.op-plus { background: #e0f2fe; color: #0284c7; }
+.op-minus { background: #fee2e2; color: #e11d48; }
+.op-equal { background: #f1f5f9; color: #334155; }
+.op-mul { background: #fef3c7; color: #d97706; }
+
+/* Recuadro Destacado Final */
+.featured-tax-banner {
+  border-radius: 16px;
+  padding: 1.5rem;
+  position: relative;
+  z-index: 1;
+  border: 2px solid;
+  transition: all 0.3s ease;
+}
+
+.banner-danger {
+  background: linear-gradient(135deg, #fff1f2 0%, #fee2e2 100%);
+  border-color: #fca5a5;
+  box-shadow: var(--shadow-glow-red);
+}
+
+.banner-success {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border-color: #86efac;
+  box-shadow: var(--shadow-glow-green);
+}
+
+.banner-info {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border-color: #93c5fd;
+  box-shadow: var(--shadow-glow-blue);
+}
+
+/* Status Pill */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.825rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.status-pill-danger {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #f87171;
+}
+
+.status-pill-success {
+  background: #dcfce7;
+  color: #14532d;
+  border: 1px solid #4ade80;
+}
+
+.status-pill-info {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #38bdf8;
+}
+
+/* Pulse Dot */
+.pulse-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+  animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+  0% { transform: scale(0.9); opacity: 0.7; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+/* Firmas */
+.signature-box {
+  border-top: 1.5px solid #64748b;
+  padding-top: 0.5rem;
+  width: 140px;
+  margin: 0 auto;
+}
+
+/* Mini KPI Card */
+.mini-kpi {
+  background: #f8fafc;
+  border: 1px solid var(--border-subtle);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+}
+
+/* ═══════════════════════════════════════════════
+   SIDEBAR LATERAL IZQUIERDO — Estilos globales
+   ═══════════════════════════════════════════════ */
+
+/* Asegura que el layout raíz sea flex-row cuando hay sidebar */
+#root {
+  flex-direction: row !important;
+}
+
+.sidebar-nav {
+  flex-shrink: 0;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.08) transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: 9999px;
+}
+
+/* Área de contenido a la derecha del sidebar */
+.main-content-area {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* En móvil: sidebar se oculta y el layout se hace columna */
+@media (max-width: 768px) {
+  #root {
+    flex-direction: column !important;
+  }
+  .sidebar-nav {
+    width: 100% !important;
+    min-width: unset !important;
+    height: auto !important;
+    position: static !important;
+    flex-direction: row !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}
+
+/* Estilos de Impresión (@media print) */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 10pt !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .official-report-sheet {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .official-report-sheet::before,
+  .report-watermark {
+    display: none !important;
+  }
+
+  .report-section-pro {
+    border: 1px solid #94a3b8 !important;
+    page-break-inside: avoid;
+  }
+
+  .report-section-pro-header {
+    background: #f1f5f9 !important;
+    color: #000000 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .featured-tax-banner {
+    border: 2px solid #000000 !important;
+    background: #f8fafc !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}
